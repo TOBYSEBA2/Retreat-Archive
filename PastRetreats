@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CJHM Retreat Archive</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-800">
+  <div class="max-w-7xl mx-auto px-4 py-10">
+    <h1 class="text-4xl font-bold text-center mb-6">Retreat Archive</h1>
+
+    <!-- Filter Controls -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+      <select id="yearFilter" class="p-2 rounded border border-gray-300">
+        <option value="">Filter by Year</option>
+        <option value="2022">2022</option>
+        <option value="2023">2023</option>
+        <option value="2024">2024</option>
+        <option value="2025">2025</option>
+      </select>
+      <select id="speakerFilter" class="p-2 rounded border border-gray-300">
+        <option value="">Filter by Speaker</option>
+        <option value="Sabu">Br. Sabu Aaruthottiyil</option>
+        <option value="Sajith">Br. Sajith Joseph</option>
+        <option value="Joy">Br. Joy Kallukaran</option>
+        <option value="Thomas">Rev. Dr. Thomas Vazhacharickal</option>
+      </select>
+      <select id="locationFilter" class="p-2 rounded border border-gray-300">
+        <option value="">Filter by Location</option>
+        <option value="Houston">Houston</option>
+        <option value="Stafford">Stafford</option>
+        <option value="Dickinson">Dickinson</option>
+      </select>
+    </div>
+
+    <!-- Retreat Entries -->
+    <div id="retreatList" class="space-y-6">
+      <!-- Retreats will be dynamically inserted here -->
+    </div>
+  </div>
+
+  <script>
+    const retreats = [
+      {
+        title: "Holy Fire Anointing Healing Retreat",
+        date: "July 21–24, 2022",
+        location: "Dickinson",
+        speaker: "Sabu",
+        description: "4-day residential retreat led by Br. Sabu and Fr. Anil Palakkal, with healing, adoration, confession, and worship by Br. Shyjan Vadakken."
+      },
+      {
+        title: "3-Day Stay-In Healing & Deliverance Retreat",
+        date: "December 9–11, 2022",
+        location: "Dickinson",
+        speaker: "Sajith",
+        description: "Led by Br. Sajith Joseph and Fr. Raju Jerome, with praise and worship by Br. Diljo Francis."
+      },
+      {
+        title: "Holy Fire Anointing Healing Service",
+        date: "December 4–5, 2023",
+        location: "Stafford",
+        speaker: "Sabu",
+        description: "Two-day healing service with Br. Sabu Aaruthottiyil and worship by Br. Shyjan Vadakken at St. Peter's Malankara Catholic Church."
+      },
+      {
+        title: "Fire of Grace Healing Retreat",
+        date: "March 15–17, 2024",
+        location: "Stafford",
+        speaker: "Sabu",
+        description: "3-day retreat at St. John's Knanaya Syrian Orthodox Church with Br. Sabu Aaruthottiyil and Br. V.D. Raju."
+      },
+      {
+        title: "American Revival USA 2024 – One-Day Retreat",
+        date: "June 8, 2024",
+        location: "Dickinson",
+        speaker: "Sajith",
+        description: "One-day revival with Br. Sajith Joseph, Br. Santhosh T., and Fr. Chacko Puthumayil. Worship by Br. Diljo Francis."
+      },
+      {
+        title: "Divine Mercy Retreat",
+        date: "September 21, 2024",
+        location: "Houston",
+        speaker: "Joy",
+        description: "One-day retreat for HTCC with Fr. Kuriakose Punnolil and Br. Johnson (Divine Retreat Center). Worship by Br. V.D. Raju."
+      },
+      {
+        title: "REGNUM DEI – Inner Healing & Exorcism Retreat",
+        date: "November 28 – December 1, 2024",
+        location: "Dickinson",
+        speaker: "Thomas",
+        description: "Led by Rev. Dr. Thomas Vazhacharickal, focusing on deep inner healing, deliverance, and exorcism."
+      },
+      {
+        title: "Fire of Grace Healing Retreat",
+        date: "December 13–15, 2024",
+        location: "Stafford",
+        speaker: "Sabu",
+        description: "Follow-up retreat with Br. Sabu Aaruthottiyil and worship by Br. V.D. Raju."
+      },
+      {
+        title: "Word of God Preaching & 'THE HOPE' Movie Event",
+        date: "March 22, 2025",
+        location: "Missouri City & Stafford",
+        speaker: "Joy",
+        description: "Preaching and movie event with Br. Joy Kallukaran. Morning at St. Mary’s Knanaya Catholic Church, evening at St. John’s Knanaya Syrian Orthodox Church. Worship by Br. V.D. Raju."
+      }
+    ];
+
+    function renderRetreats(filterYear = '', filterSpeaker = '', filterLocation = '') {
+      const list = document.getElementById('retreatList');
+      list.innerHTML = '';
+
+      const filtered = retreats.filter(r => {
+        return (!filterYear || r.date.includes(filterYear)) &&
+               (!filterSpeaker || r.speaker === filterSpeaker) &&
+               (!filterLocation || r.location.includes(filterLocation));
+      });
+
+      filtered.forEach(r => {
+        const card = document.createElement('div');
+        card.className = 'bg-white p-6 rounded shadow';
+        card.innerHTML = `
+          <h2 class="text-2xl font-semibold mb-2">${r.title}</h2>
+          <p class="text-sm text-gray-600 mb-1"><strong>Date:</strong> ${r.date}</p>
+          <p class="text-sm text-gray-600 mb-1"><strong>Location:</strong> ${r.location}</p>
+          <p class="text-sm">${r.description}</p>
+        `;
+        list.appendChild(card);
+      });
+    }
+
+    document.getElementById('yearFilter').addEventListener('change', () => {
+      renderRetreats(
+        document.getElementById('yearFilter').value,
+        document.getElementById('speakerFilter').value,
+        document.getElementById('locationFilter').value
+      );
+    });
+
+    document.getElementById('speakerFilter').addEventListener('change', () => {
+      renderRetreats(
+        document.getElementById('yearFilter').value,
+        document.getElementById('speakerFilter').value,
+        document.getElementById('locationFilter').value
+      );
+    });
+
+    document.getElementById('locationFilter').addEventListener('change', () => {
+      renderRetreats(
+        document.getElementById('yearFilter').value,
+        document.getElementById('speakerFilter').value,
+        document.getElementById('locationFilter').value
+      );
+    });
+
+    // Initial render
+    renderRetreats();
+  </script>
+</body>
+</html>
